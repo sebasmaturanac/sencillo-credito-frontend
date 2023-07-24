@@ -1,0 +1,15 @@
+{
+	"appId": "ar.com.ingeit.sencillo.credito",
+	"appName": "Sencillo Créditos",
+	"webDir": "build",
+	"bundledWebRuntime": false,
+	"plugins": {
+		"PushNotifications": {
+			"presentationOptions": [
+				"badge",
+				"sound",
+				"alert"
+			]
+		}
+	}
+}

@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: var(--ion-color-light-tint);
+}
+
+.cardContainer {
+  width: 100%;
+  max-width: 350px;
+}
+
+.button {
+  margin-top: 20px;
+}
+
+.input {
+  margin-top: -41px;
+}
+
+.note {
+  color: #eb445a !important;
+}

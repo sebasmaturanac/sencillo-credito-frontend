@@ -1,0 +1,7 @@
+{
+  "name": "Sencillo Créditos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

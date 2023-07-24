@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1000732300500",
+    "project_id": "sencillo-credito",
+    "storage_bucket": "sencillo-credito.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000732300500:android:08d934444f97def854d741",
+        "android_client_info": {
+          "package_name": "ar.com.ingeit.sencillo.credito"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000732300500-b9prsq5olp214ps11hle0d87j5e4kf8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsio1uQdImPr5AOTUdsNSjHOyr-0K8RUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000732300500-b9prsq5olp214ps11hle0d87j5e4kf8t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
