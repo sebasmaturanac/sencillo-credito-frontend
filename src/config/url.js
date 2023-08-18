@@ -1,4 +1,5 @@
-const DEV_URL = "http://192.168.100.17:3100/api";
+//const DEV_URL = "http://192.168.100.17:3100/api";
+const DEV_URL = "http://localhost:3100/api";
 
 const PROD_URL = "https://api.sencillo.ar/api";
 

@@ -28,6 +28,8 @@ import PublicRoute from "./components/privateRoute/PublicRoute";
 import Cliente from "./pages/cliente/Cliente";
 import Pedido from "./pages/cliente/Pedido";
 import EstadoCuenta from "./pages/estadoCuenta/EstadoCuenta";
+import Chats from "./pages/chats/Chats";
+import ChatsMensajes from "./pages/chats/ChatsMensajes";
 import UploadPicturePedido from "./pages/uploadPicturePedido/UploadPicturePedido";
 
 setupIonicReact();
@@ -50,6 +52,16 @@ const App: React.FC = () => {
           <PrivateRoute
             path="/agregarCliente"
             component={Cliente}
+            exact={true}
+          />
+          <PrivateRoute
+            path="/chats"
+            component={Chats}
+            exact={true}
+          />
+          <PrivateRoute
+            path="/chat/:title"
+            component={ChatsMensajes}
             exact={true}
           />
           <PrivateRoute path="/agregarPedido" component={Pedido} exact={true} />

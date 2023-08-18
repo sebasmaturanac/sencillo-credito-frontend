@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 
 import { useHistory, useLocation } from "react-router-dom";
-import { homeOutline, homeSharp, cashOutline, cashSharp } from "ionicons/icons";
+import { homeOutline, homeSharp, cashOutline, cashSharp, mail, mailOutline, mailSharp } from "ionicons/icons";
 import "./Menu.css";
 import shallow from "zustand/shallow";
 import { usePedidoStore, pedidoStoreSelector } from "../../store/pedidosStore";
@@ -36,6 +36,18 @@ const getComisionesMenu = () =>
         },
       ]
     : [];
+    
+    const getChatMenu = () =>
+      canViewEstadoCuenta()
+        ? [
+            {
+              title: "Chats",
+              url: "/chats", 
+              iosIcon: mailOutline,
+              mdIcon: mailSharp,
+            },
+          ]
+        : [];
 
 const appPages: AppPage[] = [
   {
@@ -45,7 +57,17 @@ const appPages: AppPage[] = [
     mdIcon: homeSharp,
   },
   ...getComisionesMenu(),
+  ...getChatMenu(),
 ];
+
+/*const appChats: AppPage[] = [
+  {
+    title: "Chats",
+    url: "/home",
+    iosIcon: mailOutline,
+    mdIcon: mailSharp,
+  },
+];*/
 
 const Menu: React.FC = () => {
   const location = useLocation();

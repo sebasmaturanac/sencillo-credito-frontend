@@ -40,6 +40,8 @@ import ProductDetail from "../../components/productDetail/ProductDetail";
 import Filters from "../../components/filters/Filters";
 import { chevronDownCircleOutline, imagesOutline } from "ionicons/icons";
 import UploadPictureModal from "../../components/uploadPictureModal/UploadPictureModal";
+//import { subscribeToChats } from "../../socket/socket";
+//import { http } from "../../utils/api";
 
 const Home: React.FC = ({ history }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,6 +55,7 @@ const Home: React.FC = ({ history }: any) => {
   useOneSignal();
 
   useEffect(() => {
+    //subscribeToChats(getChats())
     try {
       fetchEntidades();
       fetchConsultas();
@@ -65,6 +68,17 @@ const Home: React.FC = ({ history }: any) => {
       });
     }
   }, [fetchEntidades, fetchConsultas, getPedidos, present]);
+
+  /*const getChats = async () => {
+    try {
+        const response = await http.get("/chat/messages");
+        console.log('chats sokcet', response)
+    } catch (error) {
+        console.log('chats error ')
+    } finally {
+        console.log('chats ok')
+    }
+};*/
 
   const toggleModal = () => setIsModalOpen((state) => !state);
 
