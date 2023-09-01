@@ -1,64 +1,92 @@
-import { IonInput, IonItem, IonLabel, IonButton, IonToolbar, IonButtons, IonTitle, IonMenuButton, IonHeader, IonBackButton} from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import { InputChangeEventDetail } from "@ionic/core"; // Importa InputChangeEventDetail
-import "react-chat-elements/dist/main.css";
+import {
+  IonInput,
+  IonItem,
+  IonButton,
+  IonToolbar,
+  IonTitle,
+  IonHeader,
+  IonContent,
+  IonPage,
+} from "@ionic/react";
+import {
+  Paper,
+  Typography,
+  ListItem,
+  ListItemText,
+  List,
+  Button,
+} from "@material-ui/core";
 import { useParams } from "react-router-dom";
+import { InputChangeEventDetail } from "@ionic/core";
 import { subscribeToChats } from "../../socket/socket";
 import { http } from "../../utils/api";
-import { TextField, Button } from "@material-ui/core";
-import { Link } from 'react-router-dom';
-import { caretBack } from 'ionicons/icons';
-
+import { id } from "date-fns/locale";
 
 const ChatsMensajes: React.FC = ({ history }: any) => {
   const { title } = useParams<{ title: string }>();
 
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<{ id: number; content: string }[]>([]);
   const [inputText, setInputText] = useState("");
-  const [selectedItem, setSelectedItem] = useState();
 
-  /*const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
-  };*/
   const handleInputChange = (event: CustomEvent<InputChangeEventDetail>) => {
-    const newValue = event.detail.value; // Obtén el valor del evento personalizado de Ionic
+    const newValue = event.detail.value;
     setInputText(newValue || "");
   };
 
-  const getChats = async () => {
+  const getChats = async (chatId: Number) => {
     try {
-      const { data } = await http.get("/chat/messages");
+      const { data } = await http.get(`/chat/messages/${chatId}`);
       setChats(data);
     } catch (error) {
-      console.log("chats error", error);
+      console.error("chats error", error);
     }
   };
 
   useEffect(() => {
-    subscribeToChats(getChats());
+    // Aquí obtén el chatId de alguna manera, tal vez de la URL o de algún otro lugar
+    const chatId = 1;
+    subscribeToChats(getChats(chatId));
   }, []);
 
   const postChats = async () => {
-    if (selectedItem === undefined || selectedItem === null) return;
     try {
-      const response = await http.post("/chat/messages", {
-        content: inputText,
+      // Crear un chat si no existe
+      const chatResponse = await http.post("/chat/createchat", {
+        participant1Id:  1,
+        participant2Id:  2,
       });
-      console.log("chats socket", response);
-      subscribeToChats(getChats());
+  
+      const chatId = chatResponse.data.id; // Obtener el ID del chat creado
+  
+      // Enviar el mensaje al chat usando el chatId obtenido
+      const messageResponse = await http.post(`/chat/messages/${chatId}`, {
+        content: inputText,
+        senderId: 1,
+        chatId,
+      });
+  
+      console.log("mensaje enviado", messageResponse);
+      subscribeToChats(chatId); // Suscribirse a los mensajes del chat
     } catch (error) {
-      console.log("chats error ");
+      console.error("chats error", error);
     } finally {
       console.log("chats ok");
       setInputText("");
     }
-  };
+  };  
 
   return (
-    <div>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
-        <IonButton slot="start" routerLink="/chats" routerDirection="back" color="secondary" fill="clear">
+          <IonButton
+            slot="start"
+            routerLink="/chats"
+            routerDirection="back"
+            color="secondary"
+            fill="clear"
+          >
             Atras
           </IonButton>
           <IonTitle>
@@ -67,41 +95,73 @@ const ChatsMensajes: React.FC = ({ history }: any) => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <h1>Conversación con Usuario {title}</h1>
-      {/* Renderizar los mensajes usando el componente MessageBox */}
-      {chats.map((message, i) => (
-        //Cada mesanje debe ser unico y se le agrega un key
-        <li key={i}>
-          {message}:{message}
-        </li>
-      ))}
+      <IonContent fullscreen>
+        <h1>Conversación con Usuario {title}</h1>
+        <Paper elevation={1} style={{ flexGrow: 1, backgroundColor: '#B2BABB' }}>
+          {chats.length > 0 ? (
+            <List style={{ maxHeight: "calc(100vh - 250px)", overflowY: "auto" }}>
+              {chats.map((item) => (
+                <ListItem
+                  key={item.id}
+                  style={{
+                    display: "flex",
+                    marginBottom: "0px",
+                    marginTop: "0px",
+                    paddingBottom: "1px",
+                    paddingTop: "1px",
+                  }}>
+                  <ListItemText
+                    primary={
+                      <Typography
+                        variant="body2"
+                        align={item.content === "mi mensaje" ? "right" : "left"}
+                        style={{
+                          color: item.content === 'mi mensaje' ? "#6E2C00" : "#154360",
+                        }}
+                        >
+                        {item.content}
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <Typography
+              variant="body1"
+              style={{ textTransform: "uppercase", fontWeight: "bold" }}
+            >
+              Sin mensajes
+            </Typography>
+          )}
+        </Paper>
 
-      <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
-        {/* Agregar el TextField y el Button para enviar mensajes */}
-        <IonItem>
-          <IonInput
-            placeholder="Ingrese su texto aquí"
-            value={inputText}
-            onIonChange={handleInputChange}
-            style={{ width: "100%" }} // Establece el ancho al 100%
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault(); // Evita el comportamiento predeterminado (por ejemplo, cambio de línea)
-                postChats(); // Llama a la función para enviar el mensaje
-              }
-            }}
-          />
-        </IonItem>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={postChats}
-          style={{ width: "100%" }}
-        >
-          Enviar
-        </Button>
-      </div>
-    </div>
+        <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+          <IonItem>
+            <IonInput
+              placeholder="Ingrese su texto aquí"
+              value={inputText}
+              onIonChange={handleInputChange}
+              style={{ width: "100%" }}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  postChats();
+                }
+              }}
+            />
+          </IonItem>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={postChats}
+            style={{ width: "100%" }}
+          >
+            Enviar
+          </Button>
+        </div>
+      </IonContent>
+    </IonPage>
   );
 };
 
