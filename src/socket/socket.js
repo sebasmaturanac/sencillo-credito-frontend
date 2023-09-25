@@ -7,8 +7,11 @@ const socket = openSocket(baseURL.replace(".ar/api", ".ar"));
 socket.on("connected", () => console.log("Socket Conectado")); //eslint-disable-line
 
 
+
 export const subscribeToChats = (handleSocketUpdate) => {
-  socket.on("Chats", handleSocketUpdate);
+  socket.on("Chats", (updatedChats) => {
+    handleSocketUpdate(updatedChats);
+  });
 };
 
 export const unSubscribeAll = () => {

@@ -7,7 +7,7 @@ export const useOneSignal = () => {
   const [present, dismiss] = useIonToast();
 
   useEffect(() => {
-    const oneSignalInit = () => {
+    /*const oneSignalInit = () => {
       OneSignal.setLogLevel(6, 0);
 
       OneSignal.setAppId("630e90d8-56ec-45a8-8bf5-ad0297702c12");
@@ -39,7 +39,7 @@ export const useOneSignal = () => {
       OneSignal.promptForPushNotificationsWithUserResponse(function (accepted) {
         console.log("User accepted notifications: " + accepted);
       });
-    };
-    oneSignalInit();
+    };*/
+    //oneSignalInit();
   }, [present, dismiss]);
 };

@@ -60,7 +60,7 @@ const App: React.FC = () => {
             exact={true}
           />
           <PrivateRoute
-            path="/chat/:title"
+            path="/chat/:chatId"
             component={ChatsMensajes}
             exact={true}
           />
