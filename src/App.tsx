@@ -64,6 +64,11 @@ const App: React.FC = () => {
             component={ChatsMensajes}
             exact={true}
           />
+          <PrivateRoute
+            path="/chats/:id"
+            component={Chats}
+            exact={true}
+          />
           <PrivateRoute path="/agregarPedido" component={Pedido} exact={true} />
           <PrivateRoute
             path="/agregarFotosPedido/:pedidoId"
